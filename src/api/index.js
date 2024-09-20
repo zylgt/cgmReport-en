@@ -13,7 +13,7 @@ const request = axios.create({
 })
 // request拦截器
 request.interceptors.request.use(config => {
-
+  config.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQcml2YXRlQ2xhaW1zIjoiYWQ5OGMyMjdjNmU5ZjFhZjg5ODNhMThlMjI4OTFhOTBjNzM2OTQzYzU3N2U3OWM4NzlmZDg0NWQxMmQ2YzU0YjZlZTJhN2U4NWI5YzkzZTVjZDhlYWFjMzA3NzRlMjllYjA0MDJlZmEzNjM5MTA5YTBhMmMwODg1N2VjNmMyNzg5ODNjOGY4Y2RjOTJmNGEwNmVhMGRlNzdmNDYxNzQ0YjZlMGEzMmZkOWNlZTNlMzhlZDAwYzViNDliYzU1MDlkM2U5ZDRkOTMyZTgyNTNlYTgyMGM0NzFmNThiMTViOTU5Y2EwNWQyZTg5YTQ2MDdlNGMzZDEwMTI1NTkyMjhhZjExMmQzMmVlYjZmYzdkYjZiOGNiMzI0ODMyZTU5Y2M1M2MiLCJleHAiOjE3MjUzODYxNjAsImlhdCI6MTcyNTM0Mjk2MH0.Md0s-ujFyMsc85WSeHoK7bRsLmHX6ugrKIrCtzMNtD0' // 让每个请求携带自定义token 请根据实际情况自行修改
   // get请求映射params参数
   if (config.method === 'get' && config.params) {
     let url = config.url + '?'

@@ -9,13 +9,17 @@
 /*
 ---------定义字体大小
 */
-$--fontSize-max:20px;
-$--fontSize-big:16px;
-$--fontSize-default:14px;
-$--fontSize-small:12px;
+
+
+$--fontSize-max:24px;
+$--fontSize-smax:20px;
+$--fontSize-big:18px;
+$--fontSize-default:16px;
+$--fontSize-small:14px;
 
 :root {
     --fontSize-max: #{$--fontSize-max};
+    --fontSize-smax: #{$--fontSize-smax};
     --fontSize-big: #{$--fontSize-big};
     --fontSize-default: #{$--fontSize-default};
     --fontSize-small: #{$--fontSize-small};

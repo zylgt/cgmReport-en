@@ -143,15 +143,43 @@
 	z-index: 99 !important;
 }
 #app .el-table .el-table__header-wrapper th,#app  .el-table .el-table__fixed-header-wrapper th{
-	color:#333;
-	font-size:14px;
+	color:#666;
+	font-size:20px;
+	font-weight: 400;
+}
+.el-table--enable-row-transition .el-table__body td.el-table__cell{
+	color:#666;
+	font-size:20px;
 }
 .el-table thead{
-	color:#333;
+	color:#666;
 }
 .project-table-view .el-textarea .el-input__count{
 	background: none;
   }
+  /* 表格 */
+table{
+	border:none;
+}
+#app #dayAnalysis .table-header{
+    background:#f7f7f7;
+}
+#dayAnalysis .el-table th.el-table__cell.is-leaf{
+	border:none;
+	background:#f7f7f7;
+}
+#app #dayAnalysis .el-table td.el-table__cell{
+	border-bottom:1px solid #666;
+}
+	
+#dayAnalysis .el-table--border::after, .el-table--group::after, .el-table::before{
+	
+	background-color: #666!important;
+	
+}
+#dayAnalysis  .el-table__body tr.current-row > td.el-table__cell, .el-table__body tr.selection-row > td.el-table__cell{
+	background: rgba(50, 186, 192, 0.1);
+}
 // .el-table .el-button--medium{
 // 	font-size:12px;
 // }

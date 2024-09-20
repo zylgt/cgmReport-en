@@ -36,7 +36,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: "", // 去掉url中的#
-  base:'',
+  base:'/report',
   routes
 })
 // router.beforeEach((to, from, next) =>{

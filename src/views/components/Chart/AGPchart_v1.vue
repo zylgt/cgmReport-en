@@ -27,12 +27,13 @@
                 </div>
             </div>
             <t-chart
-                    :style='{"width":tWidth+"%","height":height+"px"}'
+                    style="width: 100%;height:370px;"
                     :option="option"
                     :init-options="initOptions"
                     theme="tduck-echarts-theme"
             />
         </div>
+       
     </div>
 </template>
 <script>
@@ -41,7 +42,6 @@
     import {formatDate,formatTime} from '@/utils/formatTime'
     import { AGPUtils } from "@/utils/algorithm/AGP";
     import { GlucoseUtils } from "@/utils/algorithm/Glucose";
-    import {mapGetters} from "vuex"
     export default {
         data(){
             return{
@@ -51,12 +51,10 @@
                 option: {
                     grid:[
                         {
-                            show:true,
                             height:300,
                             left:140,
                             right:120,
-                            top:30,
-                            borderColor:'#666'
+                            top:30
                         }
                     ],
                     xAxis: [
@@ -67,10 +65,13 @@
                             axisTick: false,
                             splitLine:{
                                 show:false,
+                                lineStyle:{
+                                    color:'var(--color-black-60)'
+                                },
                                 interval:59
                             },
                             axisLine: {
-                                show: false,
+                                show: true,
                                 lineStyle: {
                                     color: 'var(--color-black-60)',
                                     width:1,
@@ -80,17 +81,11 @@
                             axisLabel: {
                                 formatter: function (value, index) {
                                     if (index  % 360 === 0) {
-                                        let h =  Math.floor(value/60)<10 ? '0'+ Math.floor(value/60) : Math.floor(value/60) 
-                                        let m =  value%60 < 10 ? '0' + value%60 : value%60
-                                        let moment = h+':'+m
-                                        return moment;
-                                    }
-                                    if(index+1===24*60){
-                                        return '00:00'
+                                        return value;
                                     }
                                 },
                                 interval:0,
-                                color: 'var(--color-black-40)',
+                                color: 'var(--color-black-60)',
                                 fontSize: 20, 
                                 margin:14
                             }
@@ -103,14 +98,15 @@
                             min: 0,
                             max: 15,
                             interval:3,
+                            minInterval:1,
                             splitLine:{
                                 lineStyle:{
-                                   color:'var(--color-black-20)'
+                                   color:'var(--color-black-60)'
                                 }
                             },
                             axisLabel: {
                                 formatter: '{value}',
-                                color: 'var(--color-black-40)',
+                                color: 'var(--color-black-60)',
                                 fontSize: 20,
                                 margin:14
                             }
@@ -127,10 +123,6 @@
                             },
                             stack: 'confidence-band',
                             symbol: 'none',
-                            silent: true, 
-                            emphasis:{
-                                disabled:true
-                            },
                             animation:false
                         },
                         // 置信区间5-25
@@ -142,14 +134,10 @@
                             opacity: 0,
                             },
                             areaStyle: {
-                            color: '#DAECF8',
+                            color: 'rgba(72, 160, 220, 0.2)',
                             },
                             stack: 'confidence-band',
                             symbol: 'none',
-                            silent: true, 
-                            emphasis:{
-                                disabled:true
-                            },
                             animation:false
                         },
                         //置信区间25-75
@@ -161,14 +149,10 @@
                             opacity: 0,
                             },
                             areaStyle: {
-                            color: '#B6D9F1',
+                            color: 'rgba(72, 160, 220, 0.4)',
                             },
                             stack: 'confidence-band',
                             symbol: 'none',
-                            silent: true, 
-                            emphasis:{
-                                disabled:true
-                            },
                             animation:false
                         },
                         //75-95
@@ -180,14 +164,10 @@
                             opacity: 0,
                             },
                             areaStyle: {
-                            color: '#DAECF8',
+                            color: 'rgba(72, 160, 220, 0.2)',
                             },
                             stack: 'confidence-band',
                             symbol: 'none',
-                            silent: true, 
-                            emphasis:{
-                                disabled:true
-                            },
                             animation:false
                         },
                         //中位线
@@ -200,10 +180,6 @@
                             showSymbol: false,
                             lineStyle: {
                             width: 2,
-                            },
-                            silent: true, 
-                            emphasis:{
-                                disabled:true
                             },
                             animation:false,
                             markLine: {
@@ -223,7 +199,7 @@
                                     color: 'var(--color-error)',
                                     fontSize: 20,
                                     distance: 14,
-                                    position:'end'
+                                    position:'start'
                                 },
                                 },
                                 {
@@ -238,7 +214,7 @@
                                     color: 'var(--color-warning)',
                                     fontSize: 20,
                                     distance:14,
-                                    position:'end'
+                                    position:'start'
                                 },
                                 },
                             ],
@@ -249,65 +225,108 @@
                 
                 },
                 empty:true,
-                tWidth:100,
                 target:[3.9,13.9],
-            }
-        },
-        props:{
-            dataList:{
-                type:Object
-            },
-            height:{
-                type:Number
+                unit:'mg/dL'
             }
         },
         components: {
             TChart
         },
         created(){
+            
         },
         mounted(){
-            let data = this.dataList
-            if(_.compact(data.agp05).length>1&&_.compact(data.agp25).length>1&&_.compact(data.agp50).length>1
-            &&_.compact(data.agp75).length>1&&_.compact(data.agp95).length>1){
-                    this.renderIng(data) 
-                    this.empty = false 
-            }else{
+            this.$bus.$on('getDatas',(data)=>{
+                if(data.arrayData.length>=5*1440){
+                    this.handelIng(data)  
+                     this.empty = false
+                }else{
                     this.empty = true
-            }
+                }
+            })
         },
         methods:{
+            /**
+             * 1.将原始数组分割为时刻数组，判断时间戳转换的HH:MM
+             * 2.创建5条曲线所需要的1440长度时刻数组，数组下标对应数据时刻，例如：00：00=>0  00：01=>1  12：00=>12*60
+             * 3.将时刻数组对应的下标塞到5个agp数组中
+             * 4.分时段平均值，创建24长度的时段数组，1440个时刻，i%60为一个新时刻，否则向原来的数组中push,画图时求每个时段对应的平均值
+             * 
+             */
+            handelIng(data){
+                data =  _.cloneDeep(data)
+                let array = data.arrayData
+                this.unit = data.unit
+                this.target = data.target
+                // 将数组分割为时刻数组
+                let momentMap = new Map();
+                array.forEach(item=>{
+                    item.moment = formatDate(item.DataTs*1000,'HH:MM')
+                    momentMap.has(item.moment) ? momentMap.get(item.moment).push(item.Value) : momentMap.set(item.moment, [item.Value]);
+                })
+                // 计算出AGP数据并补全图谱数据
+                let agpMap = new Map();
+                let agp05 = new Array(24 * 60);
+                let agp25 = new Array(24 * 60);
+                let agp50 = new Array(24 * 60);
+                let agp75 = new Array(24 * 60);
+                let agp95 = new Array(24 * 60);
+                let xData = new Array(24 * 60);
+                for (let i = 0; i < 24 * 60; i++) {
+                    // index换算为时刻
+                    let h =  Math.floor(i/60)<10 ? '0'+ Math.floor(i/60) : Math.floor(i/60) 
+                    let m =  i%60 < 10 ? '0' + i%60 : i%60
+                    let moment = h+':'+m
+                    if(momentMap.has(moment)){
+                        agp05[i] = AGPUtils.calculateYValue(momentMap.get(moment))?AGPUtils.calculateYValue(momentMap.get(moment)).p05:AGPUtils.calculateYValue(momentMap.get(moment))
+                        agp25[i] = AGPUtils.calculateYValue(momentMap.get(moment))?AGPUtils.calculateYValue(momentMap.get(moment)).p25:AGPUtils.calculateYValue(momentMap.get(moment))  
+                        agp50[i] = AGPUtils.calculateYValue(momentMap.get(moment))?AGPUtils.calculateYValue(momentMap.get(moment)).p50:AGPUtils.calculateYValue(momentMap.get(moment))
+                        agp75[i] = AGPUtils.calculateYValue(momentMap.get(moment))?AGPUtils.calculateYValue(momentMap.get(moment)).p75:AGPUtils.calculateYValue(momentMap.get(moment)) 
+                        agp95[i] = AGPUtils.calculateYValue(momentMap.get(moment))?AGPUtils.calculateYValue(momentMap.get(moment)).p95:AGPUtils.calculateYValue(momentMap.get(moment))
+                    }
+                     xData[i] = moment
+                }
+               
+                xData.push('00:00')
+                let params = {
+                    xData:xData,
+                    agp05:agp05,
+                    agp25:agp25,
+                    agp50:agp50,
+                    agp75:agp75,
+                    agp95:agp95
+                }
+                console.log(formatTime(new Date()),'AGP计算完成')
+                this.renderIng(params)
+               
+                
+            },
             // 渲染数据
             renderIng(data){
                 let value = _.cloneDeep(data)
                 this.option.xAxis[0].data = value.xData
-                let unit = value.unit
+                let unit = this.unit
                 let max =  Math.ceil(GlucoseUtils.mgdlToMmol(_.maxBy(value.agp95)) / 3) * 3<15?15:Math.ceil(GlucoseUtils.mgdlToMmol(_.maxBy(value.agp95)) / 3) * 3
-                this.option.series[4].markLine.data[0].yAxis = value.target[0]
-                this.option.series[4].markLine.data[1].yAxis = value.target[1]
+                this.option.series[4].markLine.data[0].yAxis = this.target[0]
+                this.option.series[4].markLine.data[1].yAxis = this.target[1]
                 if(unit != 'mg/dL'){
                     max = max
                     this.option.yAxis[0].max = max
-                    this.option.series[0].data = value.agp05.map((val) => {
-                        return val?GlucoseUtils.mgdlToMmol(val):val
-                    });
+                    this.option.series[0].data = value.agp05.map(val => GlucoseUtils.mgdlToMmol(val));
                     this.option.series[1].data = value.agp25.map((item, index) => {
-                        return item?GlucoseUtils.mgdlToMmol(item - value.agp05[index]):item;
-                    })
+                            return GlucoseUtils.mgdlToMmol(item - value.agp05[index]);
+                            })
                     this.option.series[2].data = value.agp75.map((item, index) => {
-                        return item?GlucoseUtils.mgdlToMmol(item - value.agp25[index]):item;
-                    })
+                            return GlucoseUtils.mgdlToMmol(item - value.agp25[index]);
+                            })
                     this.option.series[3].data = value.agp95.map((item, index) => {
-                        return item?GlucoseUtils.mgdlToMmol(item - value.agp75[index]):item;
-                    })
-                    this.option.series[4].data = value.agp50.map((val) => {
-                        return val?GlucoseUtils.mgdlToMmol(val):val
-                        
-                    })
+                            return GlucoseUtils.mgdlToMmol(item - value.agp75[index]);
+                            })
+                    this.option.series[4].data = value.agp50.map(val => GlucoseUtils.mgdlToMmol(val))
                    
                 }else{
                     this.option.yAxis[0].max = GlucoseUtils.mmolToMgdl(max)
-                    this.option.yAxis[0].interval =3*18
+                    this.option.yAxis[0].interval = 3*18
                     this.option.series[0].data = value.agp05;
                     this.option.series[1].data =  value.agp25.map((item, index) => {
                             return item - value.agp05[index];
@@ -326,18 +345,11 @@
                 
             }
         },
-        watch:{
-            dataList:function(n,o){
-                let data = n
-                if(_.compact(data.agp05).length>1&&_.compact(data.agp25).length>1&&_.compact(data.agp50).length>1
-                &&_.compact(data.agp75).length>1&&_.compact(data.agp95).length>1){
-                        this.renderIng(data) 
-                        this.empty = false 
-                }else{
-                     this.empty = true
-                }
-            }
-        },
+        
+        beforeDestroy(){
+            this.$bus.$off('getDatas')
+            this.$bus.$off('getVuexTag')
+        }
     }
 </script>
 <style scoped>
@@ -377,12 +389,14 @@
     .apg-legend-shape2{
         width:20px;
         height:20px;
-        background:#B6D9F1;
+        /* background:#94DBDE; */
+        background: rgba(72, 160, 220, 0.4);
     }
     .apg-legend-shape3{
         width:20px;
         height:20px;
-        background:#DAECF8;
+        /* background:rgba(72, 160, 220, 0.2); */
+        background:rgba(72, 160, 220, 0.2)
     }
     .apg-legend-shape4{
         width:20px;

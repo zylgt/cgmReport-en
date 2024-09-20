@@ -9,7 +9,7 @@ import {eventBus} from './utils/eventBus'
 
 
 
-
+Vue.use(Element)
 Vue.config.productionTip = false
 Vue.prototype.$md5 = md5;
 Vue.prototype.$bus = eventBus

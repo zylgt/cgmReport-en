@@ -7,7 +7,7 @@ function resolve(dir) {
 
 
 module.exports = {
-
+  publicPath: './',
   transpileDependencies: true,
   lintOnSave: false,
   devServer: {
