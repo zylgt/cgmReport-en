@@ -684,20 +684,21 @@ export default {
            let data = _.clone(datas)
             let unit = this.unit
             let eventList ={};
-            let sameList = {}
+            // let sameList = {}
+            let sameList = []
             let repeatNum = 1
-            data.forEach(item=>{
+            let repeatTs = 0
+            data.forEach((item,index)=>{
                 let key = formatDate(item.event_ts*1000,'YYYY-mm-dd')
                 let zeroTs = this.getZoneTime(this.$timezone,key).setHours(0,0,0)/1000
                 item.xIndex = (item.event_ts-zeroTs)/60
-                if(sameList[item.event_ts]){
+                if(Math.abs(repeatTs-item.event_ts)<900){
                     repeatNum++
-                    sameList[item.event_ts].push(item)
                 }else{
                     repeatNum = 1
-                    sameList[item.event_ts] = [item]
                 }
-                item.yPosition = unit=='mmol/L'?1*repeatNum:18*repeatNum
+                repeatTs = item.event_ts
+                item.yPosition = unit=='mmol/L'?2*repeatNum:36*repeatNum
                 item.type = 1 //普通事件
                 if(eventList[key]){
                     eventList[key].push(item)

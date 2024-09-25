@@ -32,16 +32,24 @@ export default {
                     triggerEmphasis:false
                 },
                 grid:[{
-                    left:130,
+                    left:140,
                     top:40,
                     bottom:20,
                     right:90,
+                    show:false,
+                    containLabel :false
+                },{
+                    left:100,
+                    top:40,
+                    bottom:20,
+                    right:50,
                     show:false,
                     containLabel :false
                 }],
                 xAxis: [
                     {
                         type: 'category',
+                        gridIndex:0,
                         name:'{a|TIR}',
                         nameLocation:'start',
                         nameTextStyle:{
@@ -73,11 +81,44 @@ export default {
                         axisTick:{
                              show:false
                         }
+                    },
+                    {
+                        type: 'category',
+                        gridIndex:1,
+                        data: [],
+                        boundaryGap:false,
+                        axisPointer: {
+                            type: 'shadow'
+                        },
+                        axisLine:{
+                            show:false,
+                            onZero:false
+                        },
+                        axisLabel:{
+                            show:false
+                        },
+                        axisTick:{
+                             show:false
+                        }
                     }
                 ],
                 yAxis: [
                     {
                         type: 'value',
+                        gridIndex:0,
+                        name: 'TIR',
+                        nameLocation:'start',
+                        show:false,
+                        min: 0,
+                        max: 100,
+                        interval: 20,
+                        axisLabel: {
+                            formatter: '{value}%'
+                        }
+                    },
+                    {
+                        type: 'value',
+                        gridIndex:1,
                         name: 'TIR',
                         nameLocation:'start',
                         show:false,
@@ -108,6 +149,14 @@ export default {
                         },
                         symbolSize:13,
                         data: [],
+                        emphasis:{
+                            disabled:true
+                        }, 
+                    },{
+                        name: 'TIR',
+                        type: 'line',
+                        xAxisIndex:1,
+                        yAxisIndex:1,
                         emphasis:{
                             disabled:true
                         }, 
@@ -164,10 +213,10 @@ export default {
                     triggerEmphasis:false
                 },
                 grid:[{
-                    left:150,
+                    left:140,
                     top:10,
                     bottom:30,
-                    right:50,
+                    right:90,
                     show:false,
                     containLabel :false
                 }],

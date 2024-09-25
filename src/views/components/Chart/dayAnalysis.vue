@@ -66,6 +66,7 @@
                             <img src="~@/assets/image/event-icon6.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==6'>
                             <img src="~@/assets/image/event-icon7.png" alt="" class='table-event-icon'  v-if='scope.row.message_type=="high"'>
                             <img src="~@/assets/image/event-icon8.png" alt="" class='table-event-icon'  v-if='scope.row.message_type=="low"'>
+                            <img src="~@/assets/image/event-icon8.png" alt="" class='table-event-icon'  v-if='scope.row.message_type=="elow"'>
                             <span v-if='scope.row.event_type==0'>{{scope.row.event_body.eat_name}}</span>
                             <span v-if='scope.row.event_type==1'>{{scope.row.event_body.sport_name}}</span>
                             <span v-if='scope.row.event_type==2'>{{scope.row.event_body.medicine_name}}</span>
@@ -75,7 +76,7 @@
                             <span v-if='scope.row.event_type==6'>{{scope.row.event_body.custom_name}}</span>
                             <span v-if='scope.row.message_type=="high"'>高血糖</span>
                             <span v-if='scope.row.message_type=="low"'>低血糖</span>
-                            
+                            <span v-if='scope.row.message_type=="elow"'>紧急低血糖</span>
                         </div>
                     </template>
                 </el-table-column>
@@ -91,6 +92,7 @@
                             <span v-if='scope.row.event_type==6'>{{scope.row.event_body.remark}}</span>
                             <span v-if='scope.row.message_type=="high"'>--</span>
                             <span v-if='scope.row.message_type=="low"'>--</span>
+                            <span v-if='scope.row.message_type=="elow"'>--</span>
                         </div>
                     </template>
                 </el-table-column>
