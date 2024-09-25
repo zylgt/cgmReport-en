@@ -23,7 +23,7 @@ export class GlucoseUtils {
     }
 
     // 过滤出数组中属于40到400之间的数值
-    let filteredArray = dataArray.filter(val => val >= 36 && val <= 540);
+    let filteredArray = dataArray.filter(val => val >= 40 && val <= 400);
     if (filteredArray.length === 0) {
       return null;
     }

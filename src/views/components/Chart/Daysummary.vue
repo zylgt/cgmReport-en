@@ -223,7 +223,7 @@ export default {
                 xAxis: [
                     {
                         type: 'category',
-                        name:'平均血糖值',
+                        name:'Mean Glucose',
                         nameLocation:'start',
                         nameTextStyle:{
                             color:'#666',
@@ -251,7 +251,7 @@ export default {
                 yAxis: [
                     {
                         type: 'value',
-                        name: '平均血糖值',
+                        name: 'Mean Glucose',
                         nameLocation:'end',
                         nameGap:40,
                         min: 0,
@@ -264,7 +264,7 @@ export default {
                 ],
                 series: [
                     {
-                        name: '平均血糖值',
+                        name: 'Mean Glucose',
                         type: 'bar',
                         barMaxWidth:30,
                         legendHoverLine:false,

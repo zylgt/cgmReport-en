@@ -173,12 +173,13 @@ export default {
                             axisLabel:{
                                 formatter: function (value, indexs) {
                                     if(indexs==0){
-                                        return '00:00'
+                                        return '12AM'
                                     }else if(index==dayList.length-1&&indexs==item.value.length-1||index%7==6&&indexs==item.value.length-1){
-                                        return '00:00'
+                                        return '12AM'
                                     }else if(indexs==(item.value.length/2)-1){
-                                        return '12:00'
+                                        return '12PM'
                                     }
+
                                 },
                                 interval:0,
                                 color: 'var(--color-black-60)',

@@ -7,7 +7,7 @@
         <div class='reports-box'>
             <div class='report-main-title-infos' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
-                <div class='report-main-title' >动态葡萄糖监测报告</div>
+                <div class='report-main-title' >AGP Report</div>
                 <div class='report-main-date' >
                     {{info.start_date}}<div class='repart-main-dirver-box'><span class='repart-main-dirver' ></span></div>{{info.end_date}}({{info.total_day}})
                 </div>
@@ -16,39 +16,39 @@
                 <!-- 基本信息 -->
                 <div class='report-main-base-info report-main' ref='test'>
                     <div class='report-module-title'  >
-                        <div class='report-module-title-text' >基本信息</div>
+                        <div class='report-module-title-text' >Basic Information</div>
                     </div>
                     <div class='report-base-user' >
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>姓名：</div>
+                            <div class='report-base-user-label'>Name:</div>
                             <div class='report-base-user-value'>{{info.nickname?info.nickname:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>年龄：</div>
+                            <div class='report-base-user-label'>Age:</div>
                             <div class='report-base-user-value'>{{info.age?info.age:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>糖尿病类型：</div>
+                            <div class='report-base-user-label'>Type of Diabetes:</div>
                             <div class='report-base-user-value'>{{info.diabetes_type?info.diabetes_type:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>病程：</div>
+                            <div class='report-base-user-label'>Course of the Disease:</div>
                             <div class='report-base-user-value'>{{info.diabetes_year?info.diabetes_year:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>葡萄糖目标范围：</div>
+                            <div class='report-base-user-label'>Target Range：</div>
                             <div class='report-base-user-value'>{{info.glucose_range_lower_limit}}-{{info.glucose_range_lupper_limit}}{{unit}}</div>
                         </div>  
                     </div>
                     <div class='report-data-source'>
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>监测仪序列号：</div>
+                            <div class='report-base-user-label'>Sensor Code</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>数据来源：</div>
+                            <div class='report-base-user-label'>Data Source</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>生成时间：</div>
+                            <div class='report-base-user-label'>Sync Time</div>
                         </div>  
                     </div>
                     <div class='report-data-sources'>
@@ -67,46 +67,46 @@
                 <div class='report-main-data-tir-box' >
                     <div class='report-main-data-tir report-main' >
                         <div class='report-module-title' >
-                            <div class='report-module-title-text' >血糖数据</div>
+                            <div class='report-module-title-text' >Glucose Statistics</div>
                         </div>
                         <div class='report-main-data-list'>
                             <div class='report-main-data-label'>
-                                <div class='report-main-data-label-text' >CGM佩戴天数：</div>
+                                <div class='report-main-data-label-text' >Wearing Days</div>
                             </div>
                             <div class='report-main-data-val'>{{info.total_day}}</div>
                         </div>
                         <div class='report-main-data-list'>
                             <div class='report-main-data-label'>
-                                <div class='report-main-data-label-text' >CGM有效记录的时间占比：</div>
-                                <div class='report-main-data-label-tip' >目标值>70%才可得到有效数据分析</div>
+                                <div class='report-main-data-label-text' >Time CGM Active</div>
+                                <div class='report-main-data-label-tip' >Target > 70%</div>
                             </div>
                             <div :class='[bgInfo.effective>70?"":"active","report-main-data-val"]'>{{bgInfo.effective}}%</div>
                         </div>
                         <div class='report-main-data-list' v-if='unit=="mg/dL"' >
                             <div class='report-main-data-label'>
-                                <div class='report-main-data-label-text' >MG 平均葡萄糖值：</div>
-                                <div class='report-main-data-label-tip' >目标值＜118 mg/dL</div>
+                                <div class='report-main-data-label-text' >Mean Glucose (MG)</div>
+                                <div class='report-main-data-label-tip' >Target ＜ 154mg/dL</div>
                             </div>
                             <div class='report-main-data-val'>{{bgInfo.mean}}mg/dL</div>
                         </div>
                         <div class='report-main-data-list' v-else>
                             <div class='report-main-data-label'>
-                                <div class='report-main-data-label-text' >MG 平均葡萄糖值：</div>
-                                <div class='report-main-data-label-tip' >目标值＜6.6mmol/L</div>
+                                <div class='report-main-data-label-text' >Mean Glucose (MG)</div>
+                                <div class='report-main-data-label-tip' >Target ＜6.6mmol/L</div>
                             </div>
                             <div class='report-main-data-val'>{{bgInfo.mean}}mmol/L</div>
                         </div>
                         <div class='report-main-data-list'>
                             <div class='report-main-data-label'>
-                                <div class='report-main-data-label-text' >GMI 葡萄糖管理指标:</div>
-                                <div class='report-main-data-label-tip' >目标值＜7%</div>
+                                <div class='report-main-data-label-text' >GMI</div>
+                                <div class='report-main-data-label-tip' >Target＜7%</div>
                             </div>
-                            <div class='report-main-data-val'>{{resultDay>=10?bgInfo.GMI+'%':'无足够数据'}}</div>
+                            <div class='report-main-data-val'>{{resultDay>=10?bgInfo.GMI+'%':'Not Enough Data'}}</div>
                         </div>
                         <div class='report-main-data-list'>
                             <div class='report-main-data-label'>
-                                <div class='report-main-data-label-text' >CV 变异系数：</div>
-                                <div class='report-main-data-label-tip' >目标值＜33%</div>
+                                <div class='report-main-data-label-text' >CV Coefficient of Variation</div>
+                                <div class='report-main-data-label-tip' >Target＜33%</div>
                             </div>
                             <div class='report-main-data-val'>{{bgInfo.CV}}%</div>
                         </div>
@@ -114,10 +114,10 @@
                     <div class='report-main-data-tir report-main' >
                         <div class='report-module-title' >
                             <div class='report-module-title-border' ></div>
-                            <div class='report-module-title-text' >葡萄糖目标范围内时间</div>
+                            <div class='report-module-title-text' >Time in Ranges</div>
                         </div>
                         <div class='report-module-tips report-module-tips-only' >
-                            葡萄糖目标范围内占比越高，代表血糖控制的越好。
+                            The higher the percentage of time within the TIR, the better the blood sugar control.
                         </div>
                         <div class='tir-box' >
                             <TIR :dataList='tir'/>
@@ -128,11 +128,11 @@
                 <div class='report-main-agp report-main' >
                     <div class='report-module-title' >
                         <div class='report-module-title-border' ></div>
-                        <div class='report-module-title-text' >AGP图谱</div>
+                        <div class='report-module-title-text' >Ambulatory Glucose Profile (AGP)</div>
                     </div>
                     <div class='report-module-tips' >
                             <div class='report-module-tips' >
-                            中位数葡萄糖曲位于目标范围内，且越平坦，表示血糖稳定性越好。25%-75%区间（图中深蓝色区域）与5%-95%区间（图中浅蓝色区域）均显示日间血糖波动情况，区间越宽提示相应时间段血糖波动越大。其中影响 25%-75%区间的因素主要是是生理状态(如胰岛素抵抗等)和药物治疗等。影响5%-95%区间的因素主要是饮食，运动等。
+                            The median glucose curve is within the target range, and the flatter it is, the better the blood glucose stability. The 25%-75% range (the dark blue area in the chart) and the 5%-95% range (the light blue area in the chart) both display daytime blood glucose fluctuations. A wider range indicates greater fluctuation in blood glucose during the corresponding period.
                         </div>
                     </div>
                     <div class='agp-box' >
@@ -143,11 +143,11 @@
                 <div class='report-main-day report-main' >
                     <div class='report-module-title' >
                         <div class='report-module-title-border' ></div>
-                        <div class='report-module-title-text' >每日血糖简图</div>
+                        <div class='report-module-title-text' >Daily Glucose Profiles</div>
                     </div>
                     <div class='report-module-tips' >
                         <div class='report-module-tips' >
-                        每日血糖展示了15天中每天的血糖变化情况。
+                        Daily blood glucose shows the daily fluctuations over the 14-day period.
                         </div>
                     </div>
                     <div class='day-chart-box'>
@@ -157,18 +157,18 @@
             </div>
             <!-- 参数解释 -->
             <div class='report-main-params' >
-                <div class='report-main-params-title' >参数解释</div>
+                <div class='report-main-params-title' >Parameter Explanation</div>
                 <div class='report-main-params-item' >
-                    1.平均葡萄糖值（MG）：CGM 监测期间所有葡萄糖值的平均值，用于评价整体血糖水平。<br/>
-                    2.葡萄糖管理指标（GMI）：预估糖化血红蛋白(eHbA1c)，根据 CGM 葡萄糖读数估算 HbA1c，用于评价整体血糖水平<br/>
-                    3.变异系数(CV)：葡萄糖标准差与平均葡萄糖比值所得百分数，用于评价血糖波动。<br/>
-                    4.葡萄糖目标范围内百分比(TIR)：指葡萄糖在目标范围内的时间或其所占的百分比，<br/>
-                    5.葡萄糖高于目标范围百分比(TAR)：指葡萄糖高于目标范围的时间或其所占的百分比<br/>
-                    6.葡萄糖低于目标范围百分比(TBR):指葡萄糖低于目标范围的时间或其所占的百分比。<br/>
+                    1. Mean Glucose (MG): The average of glucose level during CGM wearing period. It is used to assess the effectiveness of diabetes management strategies. <br/>
+                    2.Glucose Management Indicator (GMI): GMI has a strong correlation with HbA1c when wearing CGM for long time. It is used to evaluate overall blood sugar standards. <br/>
+                    3.Coefficient of Variation (CV): It is calculated as the standard deviation divided by the mean glucose level，it is used to reflects blood glucose fluctuations. <br/>
+                    4.Time In Range (TIR): The time or percentage of time when glucose levels are within the target range.<br/>
+                    5.Time Above Range (TAR): The time or percentage of time when glucose levels are above the target range. <br/>
+                    6.Time Below Range (TBR): The time or percentage of time when glucose levels are below the target range.<br/>
                 </div>
-                <div class='report-main-params-title' >参考文献</div>
+                <div class='report-main-params-title' >References</div>
                 <div class='report-main-params-item' >
-                    动态葡萄糖图谱报告临床应用专家共识（2023版）
+                    Continuous glucose monitoring and metrics for clinical trials: an international consensus statement
                 </div>
             </div>
         </div>
@@ -176,7 +176,7 @@
         <div class='reports-box' >
             <div class='report-main-title-infos' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
-                <div class='report-main-title' >动态葡萄糖监测报告</div>
+                <div class='report-main-title' >Daily Blood Glucose</div>
                 <div class='report-main-date' >
                     {{info.start_date}}<div class='repart-main-dirver-box'><span class='repart-main-dirver' ></span></div>{{info.end_date}}({{info.total_day}})
                 </div>
@@ -185,43 +185,43 @@
                 <!--血糖总结  -->
                 <div class='report-main' >
                     <div class='report-module-title' >
-                        <div class='report-module-title-text' >每日血糖总结</div>
+                        <div class='report-module-title-text' >Daily Blood Glucose Summary</div>
                     </div>
                     <DaySummary :dataList='agpdayList'/>
                 </div>
                 <!-- 每日血糖图表 -->
                 <div class='report-main' >
                     <div class='report-module-title' >
-                        <div class='report-module-title-text' >每日血糖图表</div>
+                        <div class='report-module-title-text' >Daily Trend</div>
                     </div>
                     <div class='event-type' ref='eventTypes' >
                         <div class='event-type-item' >
                             <img src="~@/assets/image/event-icon0.png" alt="" class='event-icon' >
-                            <p class='event-type-label' >饮食记录</p>
+                            <p class='event-type-label' >Meal</p>
                         </div>
                         <div class='event-type-item' >
                             <img src="~@/assets/image/event-icon1.png" alt="" class='event-icon' >
-                            <p class='event-type-label' >运动记录</p>
+                            <p class='event-type-label' >Exercise</p>
                         </div>
                         <div class='event-type-item' >
                             <img src="~@/assets/image/event-icon2.png" alt="" class='event-icon' >
-                            <p class='event-type-label' >胰岛素记录</p>
+                            <p class='event-type-label' >Insulin</p>
                         </div>
                         <div class='event-type-item' >
                             <img src="~@/assets/image/event-icon3.png" alt="" class='event-icon' >
-                            <p class='event-type-label' >用药记录</p>
+                            <p class='event-type-label' >Medicine</p>
                         </div>
                         <div class='event-type-item' >
                             <img src="~@/assets/image/event-icon4.png" alt="" class='event-icon' >
-                            <p class='event-type-label' >睡眠记录</p>
+                            <p class='event-type-label' >Sleep</p>
                         </div>
                         <div class='event-type-item' >
                             <img src="~@/assets/image/event-icon5.png" alt="" class='event-icon' >
-                            <p class='event-type-label' >指尖血记录</p>
+                            <p class='event-type-label' >Blood Glucose</p>
                         </div>
                         <div class='event-type-item' >
                             <img src="~@/assets/image/event-icon6.png" alt="" class='event-icon' >
-                            <p class='event-type-label' >其他事件</p>
+                            <p class='event-type-label' >Others</p>
                         </div>
                     </div>
                     <div v-for='(item,index) in pageTwoList' :key='index'   > 
@@ -231,10 +231,10 @@
             </div>
         </div>
          <!-- 第三页 -->
-        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='item.height'>
+        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='indexs'>
             <div class='report-main-title-infos breakPage' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
-                <div class='report-main-title' >动态葡萄糖监测报告</div>
+                <div class='report-main-title' >Daily Blood Glucose Summary</div>
                 <div class='report-main-date' >
                     {{info.start_date}}<div class='repart-main-dirver-box'><span class='repart-main-dirver' ></span></div>{{info.end_date}}({{info.total_day}})
                 </div>
@@ -248,19 +248,19 @@
                 </div>
             </div>
              <!-- 参数解释 -->
-            <div class='report-main-params' v-if='indexs==pdfDayData.length-1'>
-                <div class='report-main-params-title' >参数解释</div>
+            <div class='report-main-params' >
+                <div class='report-main-params-title' >Parameter Explanation</div>
                 <div class='report-main-params-item' >
-                    1.平均葡萄糖值（MG）：CGM 监测期间所有葡萄糖值的平均值，用于评价整体血糖水平。<br/>
-                    2.葡萄糖管理指标（GMI）：预估糖化血红蛋白(eHbA1c)，根据 CGM 葡萄糖读数估算 HbA1c，用于评价整体血糖水平<br/>
-                    3.变异系数(CV)：葡萄糖标准差与平均葡萄糖比值所得百分数，用于评价血糖波动。<br/>
-                    4.葡萄糖目标范围内百分比(TIR)：指葡萄糖在目标范围内的时间或其所占的百分比，<br/>
-                    5.葡萄糖高于目标范围百分比(TAR)：指葡萄糖高于目标范围的时间或其所占的百分比<br/>
-                    6.葡萄糖低于目标范围百分比(TBR):指葡萄糖低于目标范围的时间或其所占的百分比。<br/>
+                    1. Mean Glucose (MG): The average of glucose level during CGM wearing period. It is used to assess the effectiveness of diabetes management strategies. <br/>
+                    2.Glucose Management Indicator (GMI): GMI has a strong correlation with HbA1c when wearing CGM for long time. It is used to evaluate overall blood sugar standards. <br/>
+                    3.Coefficient of Variation (CV): It is calculated as the standard deviation divided by the mean glucose level，it is used to reflects blood glucose fluctuations. <br/>
+                    4.Time In Range (TIR): The time or percentage of time when glucose levels are within the target range.<br/>
+                    5.Time Above Range (TAR): The time or percentage of time when glucose levels are above the target range. <br/>
+                    6.Time Below Range (TBR): The time or percentage of time when glucose levels are below the target range.<br/>
                 </div>
-                <div class='report-main-params-title' >参考文献</div>
+                <div class='report-main-params-title' >References</div>
                 <div class='report-main-params-item' >
-                    动态葡萄糖图谱报告临床应用专家共识（2023版）
+                    Continuous glucose monitoring and metrics for clinical trials: an international consensus statement
                 </div>
             </div>
         </div>
@@ -276,7 +276,7 @@ import { AGPUtils } from "@/utils/algorithm/AGP";
 import { TIRUtils } from "@/utils/algorithm/TIR";
 import { GlucoseUtils } from "@/utils/algorithm/Glucose";
 import {getReportData} from '@/api/api'
-import {formatDate,formatTime} from '@/utils/formatTime'
+import {formatDate,formatTime, formatEn,formatWeekEn} from '@/utils/formatTime'
 export default {
     data(){
         return{
@@ -343,7 +343,7 @@ export default {
                                     let unit = response.data.glucose_unit == 1?'mg/dL':'mmol/L'
                                     this.unit = unit
 
-                                    this.nowdate =  formatDate(new Date() ,'YYYY年mm月dd日') 
+                                    this.nowdate = formatEn(new Date())
 
                                     let arrayData = response.data.datas
                                     if(arrayData.length>0){
@@ -357,6 +357,8 @@ export default {
                                     let e_t = e_n.replace(/[日]/g,"");
                                     let s = response.data.start_date.indexOf('年')==-1?this.getZoneTime(response.data.timezone,response.data.start_date):this.getZoneTime(response.data.timezone,s_t)
                                     let e = response.data.end_date.indexOf('年')==-1?this.getZoneTime(response.data.timezone,response.data.end_date):this.getZoneTime(response.data.timezone,e_t)
+                                    this.info.start_date = formatEn(s)
+                                    this.info.end_date = formatEn(e)
                                     let s_date = s.setHours(0,0,0)/1000
                                     let e_date = e.setHours(23,59,59)/1000
                                     if(arrayData.length>0){
@@ -400,10 +402,10 @@ export default {
             const result = [];
 
             const seenTimes = new Set();
-            let levelLowInvalidMg = 36
-            let levelHighInvalidMg = 540
-            let levelTooLowMg = 36
-            let levelTooHighMg = 540
+            let levelLowInvalidMg = 40
+            let levelHighInvalidMg = 400
+            let levelTooLowMg = 40
+            let levelTooHighMg = 400
             data.forEach(item => {
                 const timeStr = formatDate(item.DataTs*1000,'YYYY-mm-dd HH:MM')
 
@@ -627,7 +629,7 @@ export default {
                     target:this.target,
                     date:formatDate(item[0].DataTs*1000,'YYYY-mm-dd'),
                     day: formatDate(item[0].DataTs*1000,'mm-dd'),
-                    week: formatDate(item[0].DataTs*1000,'WW'),
+                    week: formatWeekEn(item[0].DataTs*1000),
                     value:value,
                     resultValue:_.compact(originValue),
                     max:max,
@@ -674,7 +676,7 @@ export default {
             if(unit=='mmol/L'){
                 bgInfo.mean = GlucoseUtils.mgdlToMmol(bgInfo.mean)
             }
-            let filteredArray = BdatArray.filter(item => item.Value >= 36 && item.Value <= 540);
+            let filteredArray = BdatArray.filter(item => item.Value >= 40 && item.Value <= 400);
             bgInfo.effective = _.round((filteredArray.length/originList.length)*100,1)
             bgInfo.allData = filteredArray
             this.bgInfo = bgInfo
@@ -758,7 +760,7 @@ export default {
         },
         // cgm有效时间占比
         handel(dataArray){
-            let filteredArray = dataArray.filter(val => val >= 36 && val <= 540);
+            let filteredArray = dataArray.filter(val => val >= 40 && val <= 400);
             this.bgInfo.effective = _.round((filteredArray.length/dataArray.length)*100,1)
         },
         // 获取地址栏参数

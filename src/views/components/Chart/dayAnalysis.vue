@@ -4,11 +4,11 @@
             <div class='overview-compliance-border' v-if='dayInfo.tir>=70'></div>
             <div class='overview-nocompliance-border'  v-if='dayInfo.tir<70'></div>
             <div class='analysis-header' >
-                <div class='analysis-date' >{{dayInfo.day}}   {{dayInfo.week}}</div>
+                <div class='analysis-date' >{{dayInfo.day}},{{dayInfo.week}}</div>
             </div>
             <div class='empty'  v-show='dayInfo.resultValue.length<=0' >
                 <img src="~@/assets/image/empty-icon.png" alt="" class='empty-icon' >
-                <div class='empty-text' >暂无数据</div>
+                <div class='empty-text' >NO Date</div>
             </div>
             <div class='analysis-box'  v-show='dayInfo.resultValue.length>0' >
                 <div class='chart-box'>
@@ -16,28 +16,28 @@
                         <div class='analysis-info-item' >
                             <div  :class='[dayInfo.avg>118.8?"active":"","analysis-info-value"]' v-if='unit=="mg/dL"'>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mg/dL</span>  </div>
                             <div  :class='[dayInfo.avg>6.6?"active":"","analysis-info-value"]' v-else>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mmol/L</span>  </div>
-                            <div class='analysis-info-label' >平均葡萄糖值（MG）</div>
+                            <div class='analysis-info-label' >Mean Glucose (MG)</div>
                         </div>
                         <div class='analysis-info-item' >
                             
                             <div  :class='[dayInfo.fluctate>79.2?"active":"","analysis-info-value"]'  v-if='unit=="mg/dL"'>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mg/dL</span></div>
                             <div  :class='[dayInfo.fluctate>4.4?"active":"","analysis-info-value"]'  v-else>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mmol/L</span></div>
-                            <div class='analysis-info-label' >最大血糖波动</div>
+                            <div class='analysis-info-label' >Max Fluctuation</div>
                         </div>
                         <div class='analysis-info-item' >
                             
                             <div :class='[dayInfo.tir<=70?"active":"","analysis-info-value"]' >{{dayInfo.tir}} <span class='analysis-info-value-unit' >%</span></div>
-                            <div class='analysis-info-label' >目标范围内占比</div>
+                            <div class='analysis-info-label' >Time In Range</div>
                         </div>
                         <div class='analysis-info-item' >
                             
                             <div :class='[dayInfo.lowTir>5?"active":"","analysis-info-value"]' >{{dayInfo.lowTir}} <span class='analysis-info-value-unit' >%</span></div>
-                            <div class='analysis-info-label' >低于目标范围占比</div>
+                            <div class='analysis-info-label' >Time Below Range</div>
                         </div>
                         <div class='analysis-info-item' >
                         
                             <div :class='[dayInfo.hightTir>25?"active":"","analysis-info-value"]' >{{dayInfo.hightTir}} <span class='analysis-info-value-unit' >%</span></div>
-                            <div class='analysis-info-label' >高于目标范围占比</div>
+                            <div class='analysis-info-label' >Time Above Range</div>
                         </div>
                     </div>
                     <t-chart
@@ -53,8 +53,8 @@
         <div class='event-box' v-if='tableData.length>0' >
             <el-table :data="tableData" style="width: 100%;border:none;"
             header-row-class-name='table-header' highlight-current-row ref="singleTable">
-                <el-table-column  prop="ts"  label="时间"></el-table-column>
-                <el-table-column  prop="event"  label="事件">
+                <el-table-column  prop="ts"  label="Time"></el-table-column>
+                <el-table-column  prop="event"  label="Event">
                     <template slot-scope="scope"> 
                         <div class='table-event-type' >
                             <img src="~@/assets/image/event-icon0.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==0'>
@@ -72,22 +72,22 @@
                             <span v-if='scope.row.event_type==2'>{{scope.row.event_body.medicine_name}}</span>
                             <span v-if='scope.row.event_type==3'>{{scope.row.event_body.insulin_name}}</span>
                             <span v-if='scope.row.event_type==4'>{{scope.row.event_body.sleep_name}}</span>
-                            <span v-if='scope.row.event_type==5'>指尖血</span>
+                            <span v-if='scope.row.event_type==5'>Blood Glucose</span>
                             <span v-if='scope.row.event_type==6'>{{scope.row.event_body.custom_name}}</span>
-                            <span v-if='scope.row.message_type=="high"'>高血糖</span>
-                            <span v-if='scope.row.message_type=="low"'>低血糖</span>
-                            <span v-if='scope.row.message_type=="elow"'>紧急低血糖</span>
+                            <span v-if='scope.row.message_type=="high"'>High</span>
+                            <span v-if='scope.row.message_type=="low"'>Low</span>
+                            <span v-if='scope.row.message_type=="elow"'>Urgent low</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column  prop="event"  label="记录详情">
+                <el-table-column  prop="event"  label="Record Details">
                     <template slot-scope="scope"> 
                         <div class='table-event-type' >
                             <span v-if='scope.row.event_type==0'>{{scope.row.event_body.remark}}</span>
-                            <span v-if='scope.row.event_type==1'>{{scope.row.event_body.total_minute}}分钟</span>
+                            <span v-if='scope.row.event_type==1'>{{scope.row.event_body.total_minute}} minutes</span>
                             <span v-if='scope.row.event_type==2'>{{scope.row.event_body.medicine_time_name}}</span>
                             <span v-if='scope.row.event_type==3'>{{scope.row.event_body.medicine_name}}</span>
-                            <span v-if='scope.row.event_type==4'>{{scope.row.event_body.total_minute}}分钟</span>
+                            <span v-if='scope.row.event_type==4'>{{scope.row.event_body.total_minute}} minutes</span>
                             <span v-if='scope.row.event_type==5'>{{scope.row.event_body.fingertipblood_name}}</span>
                             <span v-if='scope.row.event_type==6'>{{scope.row.event_body.remark}}</span>
                             <span v-if='scope.row.message_type=="high"'>--</span>
@@ -96,7 +96,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column  prop="value"  label="测量值">
+                <el-table-column  prop="value"  label="Glucose Level">
                     <template slot-scope="scope"> 
                         <div v-if='scope.row.value&&scope.row.event_type!=5' >{{scope.row.value}}{{unit}}</div>
                         <div v-if='scope.row.event_type==5' >{{scope.row.event_body.bg}}{{unit}}</div>
@@ -110,7 +110,7 @@
 </template>
 <script>
 import TChart from '@/views/components/TChart'
-import {formatDate,formatTime} from '@/utils/formatTime'
+import {formatDate,formatTime,formatDayEn} from '@/utils/formatTime'
 import { TIRUtils } from "@/utils/algorithm/TIR";
 import { GlucoseUtils } from "@/utils/algorithm/Glucose";
 import img0 from '@/assets/image/event-icon0.png'
@@ -163,13 +163,20 @@ export default {
                         axisLabel: {
                             formatter: function (value, index) {
                                 if (index  % 360 === 0) {
-                                    let h =  Math.floor(value/60)<10 ? '0'+ Math.floor(value/60) : Math.floor(value/60) 
-                                    let m =  value%60 < 10 ? '0' + value%60 : value%60
-                                    let moment = h+':'+m
+                                    let h =  Math.floor(value/60)
+                                    let moment = h
+                                    if(h>12){
+                                        moment = h-12+'PM'
+                                    }else if(h==12){
+                                        moment = h+'PM'
+                                    }else{
+                                        if(h==0){h=12}
+                                         moment = h+'AM'
+                                    }
                                     return moment;
                                 }
                                 if(index+1===24*60){
-                                    return '00:00'
+                                    return '12AM'
                                 }
                             },
                             interval:0,
@@ -324,7 +331,7 @@ export default {
                     lowTir = TIRUtils.getTIRResult(resultValue).lowRate + TIRUtils.getTIRResult(resultValue).veryLowRate
                     hightTir = TIRUtils.getTIRResult(resultValue).highRate + TIRUtils.getTIRResult(resultValue).veryHighRate
                 }
-                dayInfo.day = formatDate(dayInfo.day,'mm月dd日')
+                dayInfo.day = formatDayEn(dayInfo.day)
                 dayInfo.fluctate = unit=='mg/dL'?fluctate:GlucoseUtils.mgdlToMmol(fluctate);
                 dayInfo.avg = unit=='mg/dL'? Math.round(avg):GlucoseUtils.mgdlToMmol(avg);
                 dayInfo.lowTir = _.round(Number(lowTir)*100, 1);

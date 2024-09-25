@@ -155,6 +155,34 @@ export function formatAxis(param) {
 	}
 }
 
+export function formatEn(date){
+	date  = new Date(date)
+	let options={
+		year: "numeric",
+		month: "short",
+		day: "numeric"
+	}
+	let format = date.toLocaleDateString("en-US", options);
+	return format
+}
+export function formatWeekEn(date){
+	date  = new Date(date)
+	let options={
+		weekday: "long",
+	}
+	let format = date.toLocaleDateString("en-US", options);
+	return format
+}
+export function formatDayEn(date){
+	date  = new Date(date)
+	let options={
+		month: "short",
+		day: "numeric"
+	}
+	let format = date.toLocaleDateString("en-US", options);
+	return format
+}
+
 const formatNumber = n => {
     n = n.toString()
     return n[1] ? n : '0' + n

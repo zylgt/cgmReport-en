@@ -2,28 +2,28 @@
     <div>
          <div class='agp-chart-empty' v-if='empty'>
             <img src="~@/assets/image/empty-icon.png" alt="" class='empty-icon' >
-            <div class='agp-chartempty-tips' >需要5天完整数据生成AGP图谱</div>
+            <div class='agp-chartempty-tips' >At least 5 days of data are required.</div>
         </div>
         <div v-else>
             <div class='agp-legend' >
                 <div class='agp-legend-item' >
                     <div class='apg-legend-shape1'>—</div>
-                    <div class='agp-legend-info' >50%中位线</div>
+                    <div class='agp-legend-info' >50%Median</div>
                 </div>
                 <div class='agp-legend-item' >
                     <div class='apg-legend-shape2'></div>
-                    <div class='agp-legend-info' >25%-75%区间</div>
+                    <div class='agp-legend-info' >25%-75% Range</div>
                 </div>
                 <div class='agp-legend-item' >
                     <div class='apg-legend-shape3'></div>
-                    <div class='agp-legend-info' >5%-95%区间</div>
+                    <div class='agp-legend-info' >5%-95% Range</div>
                 </div>
                 <div class='agp-legend-item' >
                     <div class='apg-legend-shape4-box'>
                         <p class='apg-legend-shape4'></p>
                         <p class='apg-legend-shape4'></p>
                     </div>
-                    <div class='agp-legend-info' >目标范围</div>
+                    <div class='agp-legend-info' >Target Range</div>
                 </div>
             </div>
             <t-chart
@@ -80,14 +80,21 @@
                             axisLabel: {
                                 formatter: function (value, index) {
                                     if (index  % 360 === 0) {
-                                        let h =  Math.floor(value/60)<10 ? '0'+ Math.floor(value/60) : Math.floor(value/60) 
-                                        let m =  value%60 < 10 ? '0' + value%60 : value%60
-                                        let moment = h+':'+m
-                                        return moment;
+                                    let h =  Math.floor(value/60)
+                                    let moment = h
+                                    if(h>12){
+                                        moment = h-12+'PM'
+                                    }else if(h==12){
+                                        moment = h+'PM'
+                                    }else{
+                                         if(h==0){h=12}
+                                         moment = h+'AM'
                                     }
-                                    if(index+1===24*60){
-                                        return '00:00'
-                                    }
+                                    return moment;
+                                }
+                                if(index+1===24*60){
+                                    return '12AM'
+                                }
                                 },
                                 interval:0,
                                 color: 'var(--color-black-40)',

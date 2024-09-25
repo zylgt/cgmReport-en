@@ -16,10 +16,10 @@
                             <div class='tir-key-key ' > 
                                 <span v-if='item.index==2' :class='[Number(item.value)<=item.target?"active":"","tir-print-keys"]' >{{item.value}}%</span>
                                 <span v-if='item.index!=2' :class='[Number(item.value)>=item.target?"active":"","tir-print-key"]' >{{item.value}}%</span>
-                                ({{item.duration[0]}}时{{item.duration[1]}}分)
+                                ({{item.duration[0]}}H{{item.duration[1]}}M)
                             </div>
-                            <div class='tir-key-range' v-if='item.index==2'>目标值＞{{item.target}}%</div>
-                            <div class='tir-key-range' v-if='item.index==0||item.index==4'>目标值＜{{item.target}}%</div>
+                            <div class='tir-key-range' v-if='item.index==2'>Target＞{{item.target}}%</div>
+                            <div class='tir-key-range' v-if='item.index==0||item.index==4'>Target＜{{item.target}}%</div>
                         </div>
                     </div>
                 </div>
@@ -27,14 +27,14 @@
                     <div :class='[highLine?"":"disabled","tir-all-line"]'></div>
                     <div class='tir-all-value' >
                         <div :class='[Number(highTarget)>=25?"active":"","tir-print-key"]' >{{highTarget}}%</div>
-                        <div class='tir-key-range' >目标值＜25%</div>
+                        <div class='tir-key-range' >Target＜25%</div>
                     </div>
                 </div>
                 <div class='tir-all-2'  v-if='lowTarget!=0' :style='{height:lowTargetHeight+"px"}'>
                     <div :class='[lowLine?"":"disabled","tir-all-line"]'></div>
                     <div class='tir-all-value'  >
                         <div :class='[Number(lowTarget)>=4?"active":"","tir-print-key"]' >{{lowTarget}}%</div>
-                        <div class='tir-key-range' >目标值＜4%</div>
+                        <div class='tir-key-range' >Target＜4%</div>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@ export default {
     data(){
         return{
             levels: [
-                {key: '很高：', 
+                {key: 'Very High', 
                     value:1,  
                     duration:[],
                     color: '#E98C41',
@@ -59,7 +59,7 @@ export default {
                     index:0
                 },
                 {
-                    key: '高：',
+                    key: 'High',
                     value: 1,
                     duration:[],
                     color: '#F6C059',
@@ -69,7 +69,7 @@ export default {
                     index:1
                 },
                 {
-                    key: '目标范围内：',
+                    key: 'In Range',
                     value: 60,
                     duration:[],
                     color: '#A6CF39',
@@ -78,8 +78,8 @@ export default {
                     target:'70',
                     index:2
                 },
-                {key: '低：', value: 30,  duration:[],color: '#F43F31', desc: '3.0~3.8mmol/L', descmg:'54-69mg/dL',target:'4', index:3},
-                {key: '很低：', value:0,  duration:[],color: '#96251C', desc: '<3.0mmol/L', descmg:'<54/dL',target:'1', index:4},
+                {key: 'Low', value: 30,  duration:[],color: '#F43F31', desc: '3.0~3.8mmol/L', descmg:'54-69mg/dL',target:'4', index:3},
+                {key: 'Very Low', value:0,  duration:[],color: '#96251C', desc: '<3.0mmol/L', descmg:'<54/dL',target:'1', index:4},
             ],
             tirList:[],
             canvas:null,
