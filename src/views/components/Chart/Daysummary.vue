@@ -32,7 +32,7 @@ export default {
                     triggerEmphasis:false
                 },
                 grid:[{
-                    left:140,
+                    left:145,
                     top:40,
                     bottom:20,
                     right:90,
@@ -213,7 +213,7 @@ export default {
                     triggerEmphasis:false
                 },
                 grid:[{
-                    left:140,
+                    left:145,
                     top:10,
                     bottom:30,
                     right:90,

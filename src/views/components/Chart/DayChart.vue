@@ -116,7 +116,7 @@ export default {
                     }
                     let tirClass = item.tir>70?'tir':'tirs'
                     this.option.title.push({
-                        text:item.tir?['{date|'+item.day+'}{tirLable|TIR:}{'+tirClass+'|'+item.tir+'%}']:['{date|'+item.day+'}{tir|TIR:--}'],
+                        text:item.tir?['{date|'+item.day+'}{tirLable|TIR:}{'+tirClass+'|'+' '+item.tir+'%}']:['{date|'+item.day+'}{tir|TIR:--}'],
                         left:index==0?90:index<7&&index>0?index*(gridW+15)+90:(index%7)*(gridW+15)+90,
                         top:this.$refs.gridBox[index].offsetTop-30,
                         right:10,
@@ -129,22 +129,22 @@ export default {
                                     align:'left'
                                 },
                                 tirLable:{
-                                    fontSize:20,
+                                    fontSize:18,
                                     width:30,
                                     color:'#000',
-                                    align:'right',
+                                    align:'left',
                                     fontWeight:600
                                 },
                                 tir:{
-                                    fontSize:20,
-                                    width:70,
+                                    fontSize:18,
+                                    width:73,
                                     color:'#000',
                                     align:'left',
                                     fontWeight:600
                                 },
                                 tirs:{
-                                    fontSize:20,
-                                    width:70,
+                                    fontSize:18,
+                                    width:73,
                                     color:'#F43F31',
                                     align:'left',
                                     fontWeight:600
