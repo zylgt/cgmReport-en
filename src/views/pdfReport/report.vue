@@ -173,7 +173,7 @@
             </div>
         </div>
         <!-- 第二页 -->
-        <div class='reports-box' >
+        <div class='reports-box' :style='{height:pageTwoList[0].pdfPage*2375+"px"}'>
             <div class='report-main-title-infos' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
                 <div class='report-main-title' >Daily Blood Glucose</div>
@@ -231,7 +231,7 @@
             </div>
         </div>
          <!-- 第三页 -->
-        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='indexs'>
+        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='indexs' :style='{height:item[0].pdfPage*2375+"px"}'>
             <div class='report-main-title-infos breakPage' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
                 <div class='report-main-title' >Daily Blood Glucose Summary</div>
@@ -248,7 +248,7 @@
                 </div>
             </div>
              <!-- 参数解释 -->
-            <div class='report-main-params' >
+            <div class='report-main-params' v-if='indexs==pdfDayData.length-1' style='margin-top:30px;'>
                 <div class='report-main-params-title' >Parameter Explanation</div>
                 <div class='report-main-params-item' >
                     1. Mean Glucose (MG): The average of glucose level during CGM wearing period. It is used to assess the effectiveness of diabetes management strategies. <br/>
@@ -634,6 +634,7 @@ export default {
                     resultValue:_.compact(originValue),
                     max:max,
                     tir:this.handelRoundTir(result).normalRate,
+                    pdfPage:Math.ceil((720+event_length*55)/2375),
                     height:720+event_length*55,
                     events:all_events
                 })
@@ -810,6 +811,7 @@ export default {
     .reports-box{
         height:2375px;
         overflow: hidden;
+        position: relative;
     }
     .report-main{
         box-sizing: border-box;
@@ -826,7 +828,7 @@ export default {
         position: relative;
     }
     .report-logo{
-        width:158px;
+        width:194px;
         height:50px;
         display: block;
     }

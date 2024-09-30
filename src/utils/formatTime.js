@@ -154,7 +154,27 @@ export function formatAxis(param) {
 		return '夜里好'
 	}
 }
-
+export function format12Date(date){
+	date  = new Date(date)
+	let hours = date.getHours()
+	let minute = date.getMinutes()
+	if(minute<10){
+		minute = '0'+minute
+	}
+	let format = null
+	if(hours>12){
+		format = hours-12+':'+minute+'PM'
+	}else if(hours<12){
+		if(hours==0){
+			hours = 12
+		}
+		format = hours+':'+minute+'AM'
+	}else if(hours==12){
+		format = hours+':'+minute+'PM'
+	}
+	console.log(format)
+	return format
+}
 export function formatEn(date){
 	date  = new Date(date)
 	let options={

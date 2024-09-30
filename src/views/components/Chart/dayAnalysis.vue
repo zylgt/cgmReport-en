@@ -59,8 +59,8 @@
                         <div class='table-event-type' >
                             <img src="~@/assets/image/event-icon0.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==0'>
                             <img src="~@/assets/image/event-icon1.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==1'>
-                            <img src="~@/assets/image/event-icon2.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==2'>
-                            <img src="~@/assets/image/event-icon3.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==3'>
+                            <img src="~@/assets/image/event-icon2.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==3'>
+                            <img src="~@/assets/image/event-icon3.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==2'>
                             <img src="~@/assets/image/event-icon4.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==4'>
                             <img src="~@/assets/image/event-icon5.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==5'>
                             <img src="~@/assets/image/event-icon6.png" alt="" class='table-event-icon'  v-if='scope.row.event_type==6'>
@@ -86,13 +86,14 @@
                             <span v-if='scope.row.event_type==0'>{{scope.row.event_body.remark}}</span>
                             <span v-if='scope.row.event_type==1'>{{scope.row.event_body.total_minute}} minutes</span>
                             <span v-if='scope.row.event_type==2'>{{scope.row.event_body.medicine_time_name}}</span>
-                            <span v-if='scope.row.event_type==3'>{{scope.row.event_body.medicine_name}}</span>
+                            <span v-if='scope.row.event_type==3'>{{scope.row.event_body.insulin_value}}IU</span>
                             <span v-if='scope.row.event_type==4'>{{scope.row.event_body.total_minute}} minutes</span>
                             <span v-if='scope.row.event_type==5'>{{scope.row.event_body.fingertipblood_name}}</span>
                             <span v-if='scope.row.event_type==6'>{{scope.row.event_body.remark}}</span>
                             <span v-if='scope.row.message_type=="high"'>--</span>
                             <span v-if='scope.row.message_type=="low"'>--</span>
                             <span v-if='scope.row.message_type=="elow"'>--</span>
+                             <span v-if='scope.row.break' style='height:60px;' ></span>
                         </div>
                     </template>
                 </el-table-column>
@@ -110,13 +111,13 @@
 </template>
 <script>
 import TChart from '@/views/components/TChart'
-import {formatDate,formatTime,formatDayEn} from '@/utils/formatTime'
+import {formatDate,formatTime,formatDayEn,format12Date} from '@/utils/formatTime'
 import { TIRUtils } from "@/utils/algorithm/TIR";
 import { GlucoseUtils } from "@/utils/algorithm/Glucose";
 import img0 from '@/assets/image/event-icon0.png'
 import img1 from '@/assets/image/event-icon1.png'
-import img2 from '@/assets/image/event-icon2.png'
-import img3 from '@/assets/image/event-icon3.png'
+import img2 from '@/assets/image/event-icon3.png'
+import img3 from '@/assets/image/event-icon2.png'
 import img4 from '@/assets/image/event-icon4.png'
 import img5 from '@/assets/image/event-icon5.png'
 import img6 from '@/assets/image/event-icon6.png'
@@ -421,7 +422,7 @@ export default {
                     }
                     tableData.push({
                         id:item?item.event_id:'',
-                        ts:item?formatDate(item.event_ts*1000,'HH:MM'):'',
+                        ts:item?format12Date(item.event_ts*1000):'',
                         event_type:item?item.event_type:'',
                         event_body:item?item.event_body:'',
                         value:item?chartValue[item.xIndex]:'',
@@ -429,6 +430,26 @@ export default {
                         message_type:item?item.message_type:''
                     })
                     this.tableData = tableData
+                })
+                this.$nextTick(()=>{
+                    let eventTop = this.$refs.events.offsetTop
+                    let pageHeight = 2375
+                    let pageEventHeight = pageHeight - eventTop
+                    let resultHeight =  this.$refs.events.clientHeight
+                    let eventLength =Math.floor((2375-eventTop-48)/55)
+                    if(resultHeight>pageEventHeight){
+                        let params= {
+                            id:'',
+                            ts:'',
+                            event_type:'null',
+                            event_body:'',
+                            value:'',
+                            bgValue:'',
+                            message_type:'',
+                            break:true
+                        }
+                        this.tableData.splice(eventLength,0,params)
+                    }
                 })
             }else{
                 this.tableData = []
