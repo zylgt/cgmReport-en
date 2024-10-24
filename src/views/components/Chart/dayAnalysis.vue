@@ -14,7 +14,7 @@
                 <div class='chart-box'>
                     <div class='analysis-info' >
                         <div class='analysis-info-item' >
-                            <div  :class='[dayInfo.avg>118.8?"active":"","analysis-info-value"]' v-if='unit=="mg/dL"'>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mg/dL</span>  </div>
+                            <div  :class='[dayInfo.avg>154?"active":"","analysis-info-value"]' v-if='unit=="mg/dL"'>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mg/dL</span>  </div>
                             <div  :class='[dayInfo.avg>6.6?"active":"","analysis-info-value"]' v-else>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mmol/L</span>  </div>
                             <div class='analysis-info-label' >Mean Glucose (MG)</div>
                         </div>
@@ -50,7 +50,7 @@
                 </div>
             </div>
          </div>
-        <div class='event-box' v-if='tableData.length>0' >
+        <div class='event-box' ref='events' v-if='tableData.length>0' >
             <el-table :data="tableData" style="width: 100%;border:none;"
             header-row-class-name='table-header' highlight-current-row ref="singleTable">
                 <el-table-column  prop="ts"  label="Time"></el-table-column>
@@ -191,8 +191,9 @@ export default {
                     {
                         type: 'value',
                         gridIndex:0,
-                        min: 0,
-                        max: 15,
+                        min: 40,
+                        max: 400,
+                        interval:50,
                         splitLine:{
                             lineStyle:{
                                 color:'var(--color-black-20)'
@@ -293,7 +294,7 @@ export default {
 
                 
             },
-            tableData:[],
+            tableData:[{}],
             dayInfo:{
                 resultValue:[]
             },
@@ -327,21 +328,15 @@ export default {
                 let resultValue = _.compact(dayInfo.resultValue)
                 let fluctate = _.max(dayInfo.value) -  _.min(dayInfo.value) //最大波动
                 let avg = GlucoseUtils.calculateMeanCvGmi(resultValue).mean //平均值
-                let lowTir = null,hightTir=null
-                if(TIRUtils.getTIRResult(resultValue)){
-                    lowTir = TIRUtils.getTIRResult(resultValue).lowRate + TIRUtils.getTIRResult(resultValue).veryLowRate
-                    hightTir = TIRUtils.getTIRResult(resultValue).highRate + TIRUtils.getTIRResult(resultValue).veryHighRate
-                }
                 dayInfo.day = formatDayEn(dayInfo.day)
                 dayInfo.fluctate = unit=='mg/dL'?fluctate:GlucoseUtils.mgdlToMmol(fluctate);
                 dayInfo.avg = unit=='mg/dL'? Math.round(avg):GlucoseUtils.mgdlToMmol(avg);
-                dayInfo.lowTir = _.round(Number(lowTir)*100, 1);
-                dayInfo.hightTir =  _.round(Number(hightTir)*100, 1);
-                
-                
+                dayInfo.hightTir = (Number(dayInfo.allTir.highRate)+Number(dayInfo.allTir.veryHighRate)).toFixed(1);
+                dayInfo.lowTir =   (Number(dayInfo.allTir.lowRate)+Number(dayInfo.allTir.veryLowRate)).toFixed(1);
+                 
                 // 图表数据
                 let xData = Array.from({length:60*24},(item, index) => index)
-                let max = GlucoseUtils.mgdlToMmol(dayInfo.max)<13.9?13.9: GlucoseUtils.mgdlToMmol(dayInfo.max)
+                let max = dayInfo.max > 240 ? 400 : 240
                 if(unit != 'mg/dL'){
                     dayInfo.value = dayInfo.value.map(val => GlucoseUtils.mgdlToMmol(val));
                 }
@@ -374,7 +369,8 @@ export default {
                 }]
                 this.option.series[0].markLine.data = this.option.series[0].markLine.data.splice(0,2)
                 this.option.xAxis[0].data = xData
-                this.option.yAxis[0].max = unit == 'mg/dL'?GlucoseUtils.mmolToMgdl(Math.ceil(max / 3) * 3):Math.ceil(max / 3) * 3
+                this.option.yAxis[0].max = unit == 'mg/dL'?max:Math.ceil(max / 3) * 3
+                this.option.yAxis[0].interval =(max-40)/5
                 this.option.series[0].data = dayInfo.value
                 this.option.series[0].markLine.data[0].yAxis = target[0]
                 this.option.series[0].markLine.data[1].yAxis = target[1]
@@ -432,6 +428,7 @@ export default {
                     this.tableData = tableData
                 })
                 this.$nextTick(()=>{
+                    // console.log(this.$refs.events)
                     let eventTop = this.$refs.events.offsetTop
                     let pageHeight = 2375
                     let pageEventHeight = pageHeight - eventTop

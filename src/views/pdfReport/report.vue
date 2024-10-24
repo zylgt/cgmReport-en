@@ -20,19 +20,19 @@
                     </div>
                     <div class='report-base-user' >
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>Name:</div>
+                            <div class='report-base-user-label'>Name：</div>
                             <div class='report-base-user-value'>{{info.nickname?info.nickname:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>Age:</div>
+                            <div class='report-base-user-label'>Age：</div>
                             <div class='report-base-user-value'>{{info.age?info.age:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>Type of Diabetes:</div>
+                            <div class='report-base-user-label'>Type of Diabetes：</div>
                             <div class='report-base-user-value'>{{info.diabetes_type?info.diabetes_type:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-label'>Course of the Disease:</div>
+                            <div class='report-base-user-label'>Course of the Disease：</div>
                             <div class='report-base-user-value'>{{info.diabetes_year?info.diabetes_year:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
@@ -59,7 +59,7 @@
                             <div class='report-base-user-value'>{{info.phone_model?info.phone_model:'--'}}</div>
                         </div>  
                         <div class='report-base-user-item' >
-                            <div class='report-base-user-value'>{{nowdate}}</div>
+                            <div class='report-base-user-value'>{{info.end_date}}</div>
                         </div>  
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                         <div class='report-main-data-list'>
                             <div class='report-main-data-label'>
                                 <div class='report-main-data-label-text' >CV Coefficient of Variation</div>
-                                <div class='report-main-data-label-tip' >Target＜33%</div>
+                                <div class='report-main-data-label-tip' >Target＜36%</div>
                             </div>
                             <div class='report-main-data-val'>{{bgInfo.CV}}%</div>
                         </div>
@@ -147,7 +147,7 @@
                     </div>
                     <div class='report-module-tips' >
                         <div class='report-module-tips' >
-                        Daily blood glucose shows the daily fluctuations over the 14-day period.
+                        Daily blood glucose shows the daily fluctuations over the 15-day period.
                         </div>
                     </div>
                     <div class='day-chart-box'>
@@ -173,7 +173,7 @@
             </div>
         </div>
         <!-- 第二页 -->
-        <div class='reports-box' :style='{height:pageTwoList[0].pdfPage*2375+"px"}'>
+        <div class='reports-box' :style='{height:pageTwoResultHeight*2375+"px"}'>
             <div class='report-main-title-infos' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
                 <div class='report-main-title' >Daily Blood Glucose</div>
@@ -231,10 +231,11 @@
             </div>
         </div>
          <!-- 第三页 -->
-        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='indexs' :style='{height:item[0].pdfPage*2375+"px"}'>
+        <div v-if='pdfDayData.length>0&&pdfDayData[0].length>0' >
+        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='indexs' :style='{height:pageThreePage*2375+"px"}'>
             <div class='report-main-title-infos breakPage' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
-                <div class='report-main-title' >Daily Blood Glucose Summary</div>
+                <div class='report-main-title' >Daily Blood Glucose</div>
                 <div class='report-main-date' >
                     {{info.start_date}}<div class='repart-main-dirver-box'><span class='repart-main-dirver' ></span></div>{{info.end_date}}({{info.total_day}})
                 </div>
@@ -263,6 +264,7 @@
                     Continuous glucose monitoring and metrics for clinical trials: an international consensus statement
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </template>
@@ -295,6 +297,8 @@ export default {
             pageTwoList:[],
             pdfDayData:[],
             eventList:[],
+            pageTwoResultHeight:1,
+            pageThreePage:1
         }
     },
      components: {
@@ -316,7 +320,7 @@ export default {
                                     console.log(formatTime(new Date()),'得到数据') 
 
                                     this.$timezone = response.data.timezone
-
+                                    localStorage.setItem('timezone',response.data.timezone)
                                     let target = null
                                     if(response.data.glucose_unit==0){
                                         target = [GlucoseUtils.mgdlToMmol(response.data.glucose_range_lower_limit),GlucoseUtils.mgdlToMmol(response.data.glucose_range_lupper_limit)]
@@ -346,23 +350,19 @@ export default {
                                     this.nowdate = formatEn(new Date())
 
                                     let arrayData = response.data.datas
+                                    let arrayDatas = _.uniqBy(_.orderBy(arrayData,'DataIndex','asc'),'DataTs')
                                     if(arrayData.length>0){
                                         this.empty = false
                                     }else{
                                         this.empty = true
+
                                     }
-                                    let s_n = response.data.start_date.replace(/[年月]/g,"-");
-                                    let s_t = s_n.replace(/[日]/g,"");
-                                    let e_n = response.data.end_date.replace(/[年月]/g,"-");
-                                    let e_t = e_n.replace(/[日]/g,"");
-                                    let s = response.data.start_date.indexOf('年')==-1?this.getZoneTime(response.data.timezone,response.data.start_date):this.getZoneTime(response.data.timezone,s_t)
-                                    let e = response.data.end_date.indexOf('年')==-1?this.getZoneTime(response.data.timezone,response.data.end_date):this.getZoneTime(response.data.timezone,e_t)
+                                    let s = this.getZoneTime(response.data.timezone,response.data.start_date*1000)
+                                    let e = this.getZoneTime(response.data.timezone,response.data.end_date*1000)
                                     this.info.start_date = formatEn(s)
                                     this.info.end_date = formatEn(e)
-                                    let s_date = s.setHours(0,0,0)/1000
-                                    let e_date = e.setHours(23,59,59)/1000
-                                    if(arrayData.length>0){
-                                        this.handelTemplateDay(this.handleData(arrayData,s_date,e_date),this.handelEventDay(response.data.events),this.handelWarningDay(response.data.bg_events))
+                                    if(arrayDatas.length>0){
+                                        this.handelTemplateDay(this.handleData(arrayDatas,response.data.start_date,response.data.end_date),this.handelEventDay(response.data.events),this.handelWarningDay(response.data.bg_events))
                                         
                                     }
                                   
@@ -634,12 +634,14 @@ export default {
                     resultValue:_.compact(originValue),
                     max:max,
                     tir:this.handelRoundTir(result).normalRate,
+                    allTir:this.handelRoundTir(result),
                     pdfPage:Math.ceil((720+event_length*55)/2375),
                     height:720+event_length*55,
                     events:all_events
                 })
             })
             this.agpdayList =  dayList
+            console.log(dayList)
             this.padPage(dayList)
             this.resultDay = _.filter(dayList,function(o){return o.resultValue.length>0}).length
         },
@@ -652,6 +654,7 @@ export default {
             dayList.forEach((item,index)=>{
                 if(pageTwoHeight-item.height>0){
                         this.pageTwoList.push(item) //第二页的内容
+                        this.pageTwoResultHeight = this.pageTwoList[0].pdfPage
                         pageTwoHeight = pageTwoHeight-item.height
                 }else{  //剩余的进行分页处理
                     if(pdfHeight-item.height>0){
@@ -661,6 +664,7 @@ export default {
                         page++
                         pdfDayData.push([item])
                     }
+                    this.pageThreePage = pdfDayData.length>0?pdfDayData[0][0].pdfPage:1
                     pdfHeight = pdfHeight-item.height
                 }
             
@@ -722,7 +726,6 @@ export default {
                 data.forEach(item=>{
                     item.event_ts = item.message_ts
                     let key = formatDate(item.event_ts*1000,'YYYY-mm-dd')
-                    let zeroTs = this.getZoneTime(this.$timezone,key).setHours(0,0,0)/1000
                     if(sameList[item.event_ts]){
                         repeatNum++
                         sameList[item.event_ts].push(item)
@@ -758,6 +761,16 @@ export default {
             var calctime = utc + (3600000*offset);  
             var nd = new Date(calctime);  
             return nd
+        },
+        // 获取指定时区的零点
+
+        getMidnightInTimeZone(offset) {
+            const now = new Date();
+            const timezoneOffset = now.getTimezoneOffset() * 60000; // 转换为毫秒
+            const timezoneOffsetInMs = timezone === '+8' ? timezoneOffset : timezoneOffset - now.getTimezoneOffset() * 60000;
+            const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+            const midnightInTimezone = new Date(midnight.getTime() - midnight.getTimezoneOffset() * 60000 + timezoneOffsetInMs);
+            return midnightInTimezone;
         },
         // cgm有效时间占比
         handel(dataArray){
@@ -916,6 +929,7 @@ export default {
     }
     .report-base-user-value{
         color:var(--color-black-100);
+         font-family:MiLan-Medium;
     }
     .report-data-source{
         width:100%;
@@ -966,6 +980,7 @@ export default {
         color:var(--color-black-100);
         height:27px;
         line-height: 27px;
+        font-family:MiLan-Medium;
     }
     .report-main-data-label-tip{
         font-size:16px;

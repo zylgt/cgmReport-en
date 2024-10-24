@@ -74,7 +74,7 @@ export default {
             this.gridW = gridW
             let xData = Array.from({length:60*24},(item, index) => index)
             let max = data[0].max
-            max = GlucoseUtils.mgdlToMmol(max)<13.9?13.9: GlucoseUtils.mgdlToMmol(max)
+            max = max>240?400:240
             let unit = dayList[0].unit
             this.option = {
                 tooltip :{
@@ -174,10 +174,10 @@ export default {
                                 formatter: function (value, indexs) {
                                     if(indexs==0){
                                         return '12AM'
-                                    }else if(index==dayList.length-1&&indexs==item.value.length-1||index%7==6&&indexs==item.value.length-1){
-                                        return '12AM'
-                                    }else if(indexs==(item.value.length/2)-1){
+                                    }else if(indexs==1440/2){
                                         return '12PM'
+                                    }else if(index==dayList.length-1&&indexs==1439||index%7==6&&indexs==item.value.length-1){
+                                         return '12AM'
                                     }
 
                                 },
@@ -195,7 +195,8 @@ export default {
                             show:false,
                             gridIndex:index,
                             min:0,
-                            max: unit == 'mg/dL'?GlucoseUtils.mmolToMgdl(Math.ceil(max / 3) * 3):Math.ceil(max / 3) * 3
+                            max: unit == 'mg/dL'?max:Math.ceil(max / 3) * 3,
+                            interval:(max-40)/5,
                     })
                     this.option.visualMap.push({
                         type: "piecewise",

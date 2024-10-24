@@ -223,11 +223,16 @@ export default {
                 xAxis: [
                     {
                         type: 'category',
-                        name:'Mean Glucose',
+                        name:'Mean   \nGlucose',
                         nameLocation:'start',
+                        nameTruncate:{
+                            maxWidth:80
+                        },
                         nameTextStyle:{
                             color:'#666',
-                            fontSize:18,
+                            fontSize:20,
+                            width:80,
+                            overflow:'breakAll',
                             verticalAlign:'bottom',
                         },
                         nameGap:56,

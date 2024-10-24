@@ -8,7 +8,7 @@
             <div class='agp-legend' >
                 <div class='agp-legend-item' >
                     <div class='apg-legend-shape1'>—</div>
-                    <div class='agp-legend-info' >50%Median</div>
+                    <div class='agp-legend-info' >50% Median</div>
                 </div>
                 <div class='agp-legend-item' >
                     <div class='apg-legend-shape2'></div>
@@ -107,9 +107,9 @@
                         {
                             type: 'value',
                             gridIndex:0,
-                            min: 0,
-                            max: 15,
-                            interval:3,
+                            min: 40,
+                            max: 400,
+                            interval:50,
                             splitLine:{
                                 lineStyle:{
                                    color:'var(--color-black-20)'
@@ -289,12 +289,12 @@
                 let value = _.cloneDeep(data)
                 this.option.xAxis[0].data = value.xData
                 let unit = value.unit
-                let max =  Math.ceil(GlucoseUtils.mgdlToMmol(_.maxBy(value.agp95)) / 3) * 3<15?15:Math.ceil(GlucoseUtils.mgdlToMmol(_.maxBy(value.agp95)) / 3) * 3
+                let max = _.maxBy(value.agp95)>240?400:240
                 this.option.series[4].markLine.data[0].yAxis = value.target[0]
                 this.option.series[4].markLine.data[1].yAxis = value.target[1]
                 if(unit != 'mg/dL'){
                     max = max
-                    this.option.yAxis[0].max = max
+                    // this.option.yAxis[0].max = max
                     this.option.series[0].data = value.agp05.map((val) => {
                         return val?GlucoseUtils.mgdlToMmol(val):val
                     });
@@ -313,8 +313,8 @@
                     })
                    
                 }else{
-                    this.option.yAxis[0].max = GlucoseUtils.mmolToMgdl(max)
-                    this.option.yAxis[0].interval =3*18
+                    this.option.yAxis[0].max = max
+                    this.option.yAxis[0].interval = (max-40)/5
                     this.option.series[0].data = value.agp05;
                     this.option.series[1].data =  value.agp25.map((item, index) => {
                             return item - value.agp05[index];

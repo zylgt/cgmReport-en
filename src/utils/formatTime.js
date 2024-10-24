@@ -17,7 +17,8 @@ var vm = new Vue()
  */
 export function formatDate(date,format) {
 	// date  = new Date(date)
-	date = getZoneTime(vm.$timezone,date)
+	let timezone = localStorage.getItem('timezone')
+	date = getZoneTime(timezone,date)
 	let we = date.getDay() // 星期
 	let qut = Math.floor((date.getMonth() + 3) / 3).toString() // 季度
 	const opt = {
@@ -155,7 +156,10 @@ export function formatAxis(param) {
 	}
 }
 export function format12Date(date){
-	date  = new Date(date)
+	
+	let timezone = localStorage.getItem('timezone')
+	date  =  getZoneTime(timezone,date)
+	console.log(date)
 	let hours = date.getHours()
 	let minute = date.getMinutes()
 	if(minute<10){
