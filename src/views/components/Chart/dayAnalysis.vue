@@ -370,7 +370,7 @@ export default {
                 this.option.series[0].markLine.data = this.option.series[0].markLine.data.splice(0,2)
                 this.option.xAxis[0].data = xData
                 this.option.yAxis[0].max = unit == 'mg/dL'?max:Math.ceil(max / 3) * 3
-                this.option.yAxis[0].interval =(max-40)/5
+                this.option.yAxis[0].interval =(max-40)/4
                 this.option.series[0].data = dayInfo.value
                 this.option.series[0].markLine.data[0].yAxis = target[0]
                 this.option.series[0].markLine.data[1].yAxis = target[1]

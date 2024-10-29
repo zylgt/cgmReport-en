@@ -314,7 +314,7 @@
                    
                 }else{
                     this.option.yAxis[0].max = max
-                    this.option.yAxis[0].interval = (max-40)/5
+                    this.option.yAxis[0].interval = (max-40)/4
                     this.option.series[0].data = value.agp05;
                     this.option.series[1].data =  value.agp25.map((item, index) => {
                             return item - value.agp05[index];

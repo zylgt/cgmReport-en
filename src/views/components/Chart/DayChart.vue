@@ -195,8 +195,8 @@ export default {
                             show:false,
                             gridIndex:index,
                             min:0,
-                            max: unit == 'mg/dL'?max:Math.ceil(max / 3) * 3,
-                            interval:(max-40)/5,
+                            max: max>240?400:240,
+                            interval:(max-40)/4,
                     })
                     this.option.visualMap.push({
                         type: "piecewise",
