@@ -14,13 +14,13 @@
                 <div class='chart-box'>
                     <div class='analysis-info' >
                         <div class='analysis-info-item' >
-                            <div  :class='[dayInfo.avg>154?"active":"","analysis-info-value"]' v-if='unit=="mg/dL"'>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mg/dL</span>  </div>
+                            <div  :class='[dayInfo.avg>=154?"active":"","analysis-info-value"]' v-if='unit=="mg/dL"'>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mg/dL</span>  </div>
                             <div  :class='[dayInfo.avg>6.6?"active":"","analysis-info-value"]' v-else>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mmol/L</span>  </div>
                             <div class='analysis-info-label' >Mean Glucose (MG)</div>
                         </div>
                         <div class='analysis-info-item' >
                             
-                            <div  :class='[dayInfo.fluctate>79.2?"active":"","analysis-info-value"]'  v-if='unit=="mg/dL"'>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mg/dL</span></div>
+                            <div  :class='[dayInfo.fluctate>=79.2?"active":"","analysis-info-value"]'  v-if='unit=="mg/dL"'>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mg/dL</span></div>
                             <div  :class='[dayInfo.fluctate>4.4?"active":"","analysis-info-value"]'  v-else>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mmol/L</span></div>
                             <div class='analysis-info-label' >Max Fluctuation</div>
                         </div>
@@ -31,12 +31,12 @@
                         </div>
                         <div class='analysis-info-item' >
                             
-                            <div :class='[dayInfo.lowTir>5?"active":"","analysis-info-value"]' >{{dayInfo.lowTir}} <span class='analysis-info-value-unit' >%</span></div>
+                            <div :class='[dayInfo.lowTir>=5?"active":"","analysis-info-value"]' >{{dayInfo.lowTir}} <span class='analysis-info-value-unit' >%</span></div>
                             <div class='analysis-info-label' >Time Below Range</div>
                         </div>
                         <div class='analysis-info-item' >
                         
-                            <div :class='[dayInfo.hightTir>25?"active":"","analysis-info-value"]' >{{dayInfo.hightTir}} <span class='analysis-info-value-unit' >%</span></div>
+                            <div :class='[dayInfo.hightTir>=25?"active":"","analysis-info-value"]' >{{dayInfo.hightTir}} <span class='analysis-info-value-unit' >%</span></div>
                             <div class='analysis-info-label' >Time Above Range</div>
                         </div>
                     </div>
@@ -326,7 +326,8 @@ export default {
             if(dayInfo.resultValue.length>0){
                 let target =  dayInfo.target
                 let resultValue = _.compact(dayInfo.resultValue)
-                let fluctate = _.max(dayInfo.value) -  _.min(dayInfo.value) //最大波动
+                let filterArr = dayInfo.resultValue.filter(val => val >= 40 && val <= 400);
+                let fluctate = _.max(filterArr) -  _.min(filterArr) //最大波动
                 let avg = GlucoseUtils.calculateMeanCvGmi(resultValue).mean //平均值
                 dayInfo.day = formatDayEn(dayInfo.day)
                 dayInfo.fluctate = unit=='mg/dL'?fluctate:GlucoseUtils.mgdlToMmol(fluctate);

@@ -79,7 +79,7 @@ export default {
                     index:2
                 },
                 {key: 'Low', value: 30,  duration:[],color: '#F43F31', desc: '3.0~3.8mmol/L', descmg:'54-69mg/dL',target:'4', index:3},
-                {key: 'Very Low', value:0,  duration:[],color: '#96251C', desc: '<3.0mmol/L', descmg:'<54/dL',target:'1', index:4},
+                {key: 'Very Low', value:0,  duration:[],color: '#96251C', desc: '<3.0mmol/L', descmg:'<54mg/dL',target:'1', index:4},
             ],
             tirList:[],
             canvas:null,
