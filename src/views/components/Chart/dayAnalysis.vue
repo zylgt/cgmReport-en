@@ -337,7 +337,7 @@ export default {
                  
                 // 图表数据
                 let xData = Array.from({length:60*24},(item, index) => index)
-                let max = dayInfo.max > 240 ? 400 : 240
+                let max = _.max(dayInfo.value) > 240 ? 400 : 240
                 if(unit != 'mg/dL'){
                     dayInfo.value = dayInfo.value.map(val => GlucoseUtils.mgdlToMmol(val));
                 }
