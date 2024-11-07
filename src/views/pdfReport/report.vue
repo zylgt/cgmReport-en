@@ -402,8 +402,8 @@ export default {
             const result = [];
 
             const seenTimes = new Set();
-            let levelLowInvalidMg = 40
-            let levelHighInvalidMg = 400
+            let levelLowInvalidMg = 20
+            let levelHighInvalidMg = 800
             let levelTooLowMg = 40
             let levelTooHighMg = 400
             data.forEach(item => {
@@ -420,6 +420,16 @@ export default {
                     result.push({
                     ...item,
                     value: levelTooHighMg,
+                    });
+                } else if (item.Value < levelLowInvalidMg) {
+                    result.push({
+                    ...item,
+                    value: null,
+                    });
+                } else if (item.Value > levelHighInvalidMg) {
+                    result.push({
+                    ...item,
+                    value: null,
                     });
                 } else {
                     result.push({
